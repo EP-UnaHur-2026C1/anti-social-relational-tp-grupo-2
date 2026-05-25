@@ -10,7 +10,17 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      // Esta parte determina que el comentario pertenece a un usuario.
+      Comment.belongsTo(models.User, {
+        foreignKey: 'nicknameUser',
+        as: 'user'
+      });
+
+      // Esta parte determina que el comentario pertenece a un post. 
+      Comment.belongsTo(models.Post, {
+        foreignKey: 'idPost',
+        as: 'post'
+      });
     }
   }
   Comment.init({
