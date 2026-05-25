@@ -20,18 +20,18 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       // Esta es la parte para identificar a mis seguidores
-      User.belongsToMany(Models.User, {
+      User.belongsToMany(models.User, {
         through: models.Follower,
         foreignKey: 'followedNickname',
-        otherKey: 'followerNickname', 
+        otherKey: 'followerNickname',
         as: 'followers',
       })
 
       // Esta es la parte para identificar a los usuarios que sigo
-      User.belongsToMany(Models.User, {
+      User.belongsToMany(models.User, {
         through: models.Follower,
         foreignKey: 'followerNickname',
-        otherKey: 'followedNickname', 
+        otherKey: 'followedNickname',
         as: 'following',
       })
     }
