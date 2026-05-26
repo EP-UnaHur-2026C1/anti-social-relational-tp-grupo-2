@@ -4,8 +4,8 @@ const getAll = async (req, res) => {
   try {
     const comments = await Comment.findAll({
       include: [
-        { association: "author", attributes: ["id", "nickName"] },
-        { association: "post", attributes: ["id", "description"] },
+        { association: "autor", attributes: ["id", "nickName"] },
+        { association: "post", attributes: ["id", "descripcion"] },
       ],
     });
     res.json(comments);
@@ -18,11 +18,11 @@ const getById = async (req, res) => {
   try {
     const comment = await Comment.findByPk(req.params.id, {
       include: [
-        { association: "author", attributes: ["id", "nickName"] },
-        { association: "post", attributes: ["id", "description"] },
+        { association: "autor", attributes: ["id", "nickName"] },
+        { association: "post", attributes: ["id", "descripcion"] },
       ],
     });
-    if (!comment) return res.status(404).json({ error: "Comment not found" });
+    if (!comment) return res.status(404).json({ error: "Comentario no encontrado" });
     res.json(comment);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -32,9 +32,9 @@ const getById = async (req, res) => {
 const create = async (req, res) => {
   try {
     const post = await Post.findByPk(req.body.postId);
-    if (!post) return res.status(404).json({ error: "Post not found" });
+    if (!post) return res.status(404).json({ error: "Post no encontrado" });
     const user = await User.findByPk(req.body.userId);
-    if (!user) return res.status(404).json({ error: "User not found" });
+    if (!user) return res.status(404).json({ error: "Post no encontrado" });
     const comment = await Comment.create(req.body);
     res.status(201).json(comment);
   } catch (error) {
@@ -45,7 +45,7 @@ const create = async (req, res) => {
 const update = async (req, res) => {
   try {
     const comment = await Comment.findByPk(req.params.id);
-    if (!comment) return res.status(404).json({ error: "Comment not found" });
+    if (!comment) return res.status(404).json({ error: "Comentario no encontrado" });
     await comment.update(req.body);
     res.json(comment);
   } catch (error) {
@@ -56,7 +56,7 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
   try {
     const comment = await Comment.findByPk(req.params.id);
-    if (!comment) return res.status(404).json({ error: "Comment not found" });
+    if (!comment) return res.status(404).json({ error: "Comentario no encontrado" });
     await comment.destroy();
     res.status(204).send();
   } catch (error) {
