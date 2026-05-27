@@ -3,7 +3,7 @@ const {User} = require('../../models')
 const getAll = async(req, res) => {
   try {
     const usuarios = await User.findAll({
-      attributes: ["nickname", "email"]
+      attributes: ["id", "nickname", "name", "email"]
     })
     res.status(200).json(usuarios);
   } catch(e) {
@@ -14,21 +14,31 @@ const getAll = async(req, res) => {
 }
 
 const getById = async(req, res) => {
-  const usuario = req.usuario;
-  res.status(200).json(usuario);
+  try {
+    const usuario = await User.findByPk(req.params.id, {
+      attributes: ["id", "nickname", "name", "email"],
+    });
+    if (!usuario) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json(usuario);
+  } catch (e) {
+    res.status(500).json({
+      error: e.message
+    })
+  }
 }
 
 const create = async (req, res) => {
   try {
-    const {nickname, email, password} = req.body;
+    const {nickname, name, email, password} = req.body;
     const usuario = await User.create({
       nickname, 
+      name,
       email,
       password
     })
-    res.status(200).json(usuario, {
-      message: "Usuario creado con éxito."
-    })
+    res.status(201).json(usuario)
   } catch(e) {
     res.status(500).json({
       error: e.message
@@ -38,15 +48,15 @@ const create = async (req, res) => {
 
 const update = async(req, res) => {
   try {
-    const {id} = req.params; 
-    const {nickname, email, password} = req.body;
-    const usuario = req.usuario;
+    const {nickname, name, email, password} = req.body;
+    const usuario = await User.findByPk(req.params.id);
+    if (!usuario) {
+      return res.status(404).json({ error: "User not found" });
+    }
     await usuario.update({
-      nickname, email, password
+      nickname, name, email, password
     });
-    res.status(200).json(usuario, {
-      message: "Producto actualizado con exito."
-    });
+    res.status(200).json(usuario);
   } catch(e) {
     res.status(500).json({
       error: e.message
@@ -56,11 +66,13 @@ const update = async(req, res) => {
 
 const remove = async(req, res) => {
   try {
-    const {id} = req.params; 
-    const usuario = req.usuario;
+    const usuario = await User.findByPk(req.params.id);
+    if (!usuario) {
+      return res.status(404).json({ error: "User not found" });
+    }
     await usuario.destroy();
     res.status(200).json({
-      message: "Producto eliminado con éxito."
+      message: "Usuario eliminado con éxito."
     });
   } catch(e) {
     res.status(500).json({

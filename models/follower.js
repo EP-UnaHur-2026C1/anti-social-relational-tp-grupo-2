@@ -12,23 +12,35 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // Esto permite saber a quien sigue EL usuario.
       Follower.belongsTo(models.User, {
-        foreignKey: 'followedNickname',
+        foreignKey: 'followedId',
         as: 'followedUser'
       });
 
       // Esto permite saber quien sigue AL usuario.
       Follower.belongsTo(models.User, {
-        foreignKey: 'followerNickname',
+        foreignKey: 'followerId',
         as: 'followerUser'
       });
     }
   }
   Follower.init({
-    followerNickname: DataTypes.STRING,
-    followedNickname: DataTypes.STRING
+    followerId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    followedId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    }
   }, {
     sequelize,
     modelName: 'Follower',
+    indexes: [
+      {
+        unique: true,
+        fields: ['followerId', 'followedId'],
+      },
+    ],
   });
   return Follower;
 };

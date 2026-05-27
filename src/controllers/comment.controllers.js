@@ -4,8 +4,8 @@ const getAll = async (req, res) => {
   try {
     const comments = await Comment.findAll({
       include: [
-        { association: "autor", attributes: ["id", "nickName"] },
-        { association: "post", attributes: ["id", "descripcion"] },
+        { association: "author", attributes: ["id", "nickname"] },
+        { association: "post", attributes: ["id", "description"] },
       ],
     });
     res.json(comments);
@@ -18,8 +18,8 @@ const getById = async (req, res) => {
   try {
     const comment = await Comment.findByPk(req.params.id, {
       include: [
-        { association: "autor", attributes: ["id", "nickName"] },
-        { association: "post", attributes: ["id", "descripcion"] },
+        { association: "author", attributes: ["id", "nickname"] },
+        { association: "post", attributes: ["id", "description"] },
       ],
     });
     if (!comment) return res.status(404).json({ error: "Comentario no encontrado" });
@@ -34,7 +34,7 @@ const create = async (req, res) => {
     const post = await Post.findByPk(req.body.postId);
     if (!post) return res.status(404).json({ error: "Post no encontrado" });
     const user = await User.findByPk(req.body.userId);
-    if (!user) return res.status(404).json({ error: "Post no encontrado" });
+    if (!user) return res.status(404).json({ error: "Usuario no encontrado" });
     const comment = await Comment.create(req.body);
     res.status(201).json(comment);
   } catch (error) {

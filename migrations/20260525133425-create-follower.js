@@ -9,11 +9,25 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      followerNickname: {
-        type: Sequelize.STRING
+      followerId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
-      followedNickname: {
-        type: Sequelize.STRING
+      followedId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       createdAt: {
         allowNull: false,
@@ -23,6 +37,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
+    });
+    await queryInterface.addConstraint('Followers', {
+      fields: ['followerId', 'followedId'],
+      type: 'unique',
+      name: 'unique_follow_pair'
     });
   },
   async down(queryInterface, Sequelize) {

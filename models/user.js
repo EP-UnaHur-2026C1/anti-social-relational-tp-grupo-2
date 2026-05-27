@@ -11,35 +11,49 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.hasMany(models.Post, {
-        foreignKey: 'nicknameUser',
+        foreignKey: 'userId',
         as: 'posts'
       });
       User.hasMany(models.Comment, {
-        foreignKey: 'nicknameUser',
+        foreignKey: 'userId',
         as: 'comments'  
       });
 
       // Esta es la parte para identificar a mis seguidores
       User.belongsToMany(models.User, {
         through: models.Follower,
-        foreignKey: 'followedNickname',
-        otherKey: 'followerNickname',
+        foreignKey: 'followedId',
+        otherKey: 'followerId',
         as: 'followers',
       })
 
       // Esta es la parte para identificar a los usuarios que sigo
       User.belongsToMany(models.User, {
         through: models.Follower,
-        foreignKey: 'followerNickname',
-        otherKey: 'followedNickname',
+        foreignKey: 'followerId',
+        otherKey: 'followedId',
         as: 'following',
       })
     }
   }
   User.init({
-    nickname: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
+    nickname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     deletedAt: DataTypes.DATE
   }, {
     sequelize,

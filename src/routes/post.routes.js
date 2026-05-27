@@ -3,7 +3,6 @@ const postController = require("../controllers/postController");
 const validateSchema = require("../middlewares/validateSchema");
 const { postSchema, postUpdateSchema } = require("../schemas/postSchema");
 const { postImageSchema } = require("../schemas/postImageSchema");
-const tagSchema = require("../schemas/tagSchema");
 const { idParamSchema, postImageParamSchema, postTagParamSchema } = require("../schemas/paramsSchema");
 const router = Router();
 

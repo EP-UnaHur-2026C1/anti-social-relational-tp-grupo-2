@@ -10,10 +10,13 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       isVisible: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
       },
-      message: {
-        type: Sequelize.STRING
+      content: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       config: {
         type: Sequelize.INTEGER
@@ -21,11 +24,25 @@ module.exports = {
       commentedAt: {
         type: Sequelize.DATE
       },
-      nicknameUser: {
-        type: Sequelize.STRING
+      userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
-      idPost: {
-        type: Sequelize.INTEGER
+      postId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Posts',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       createdAt: {
         allowNull: false,

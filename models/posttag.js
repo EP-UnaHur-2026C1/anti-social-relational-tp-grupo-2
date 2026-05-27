@@ -11,19 +11,31 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       PostTag.belongsTo(models.Tag, {
-        foreignKey:"idTag"
+        foreignKey:"tagId"
       })
       PostTag.belongsTo(models.Post, {
-        foreignKey:"idPost"
+        foreignKey:"postId"
       })
     }
   }
   PostTag.init({
-    idPost: DataTypes.INTEGER,
-    idTag: DataTypes.INTEGER
+    postId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    tagId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    }
   }, {
     sequelize,
     modelName: 'PostTag',
+    indexes: [
+      {
+        unique: true,
+        fields: ['postId', 'tagId'],
+      },
+    ],
   });
   return PostTag;
 };

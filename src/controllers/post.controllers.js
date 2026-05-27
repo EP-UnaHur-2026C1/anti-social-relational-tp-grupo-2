@@ -7,7 +7,7 @@ const getAll = async (req, res) => {
   try {
     const posts = await Post.findAll({
       include: [
-        { association: "author", attributes: ["id", "nickName", "name"] },
+        { association: "author", attributes: ["id", "nickname", "name"] },
         { association: "images" },
         { association: "tags" },
       ],
@@ -25,14 +25,14 @@ const getById = async (req, res) => {
 
     const post = await Post.findByPk(req.params.id, {
       include: [
-        { association: "author", attributes: ["id", "nickName", "name"] },
+        { association: "author", attributes: ["id", "nickname", "name"] },
         { association: "images" },
         { association: "tags" },
         {
           association: "comments",
           where: { createdAt: { [Op.gte]: dateLimit } },
           required: false,
-          include: [{ association: "author", attributes: ["id", "nickName"] }],
+          include: [{ association: "author", attributes: ["id", "nickname"] }],
         },
       ],
     });

@@ -11,32 +11,38 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Post.belongsTo(models.User, {
-        foreignKey: 'nicknameUser',
-        as: 'user'
+        foreignKey: 'userId',
+        as: 'author'
       })
 
       Post.hasMany(models.Comment, {
-        foreignKey: 'idPost', 
+        foreignKey: 'postId', 
         as: 'comments'
       })
 
       Post.hasMany(models.PostImage, {
-        foreignKey: 'idPost',
+        foreignKey: 'postId',
         as: 'images'
       })
 
-      Post.hasMany(models.Tag, {
-        throug: models.posttag,
-        foreignKey: 'idPost',
-        otherKey: 'idTag',
+      Post.belongsToMany(models.Tag, {
+        through: models.PostTag,
+        foreignKey: 'postId',
+        otherKey: 'tagId',
         as: 'tags'
       })
     }
   }
   Post.init({
-    description: DataTypes.STRING,
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     publicatedAt: DataTypes.DATE,
-    nicknameUser: DataTypes.STRING
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    }
   }, {
     sequelize,
     modelName: 'Post',

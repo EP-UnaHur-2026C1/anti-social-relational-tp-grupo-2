@@ -12,24 +12,37 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // Esta parte determina que el comentario pertenece a un usuario.
       Comment.belongsTo(models.User, {
-        foreignKey: 'nicknameUser',
-        as: 'user'
+        foreignKey: 'userId',
+        as: 'author'
       });
 
       // Esta parte determina que el comentario pertenece a un post. 
       Comment.belongsTo(models.Post, {
-        foreignKey: 'idPost',
+        foreignKey: 'postId',
         as: 'post'
       });
     }
   }
   Comment.init({
-    isVisible: DataTypes.BOOLEAN,
-    message: DataTypes.STRING,
+    isVisible: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    },
+    content: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     config: DataTypes.INTEGER,
     commentedAt: DataTypes.DATE,
-    nicknameUser: DataTypes.STRING,
-    idPost: DataTypes.INTEGER
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    postId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    }
   }, {
     sequelize,
     modelName: 'Comment',
