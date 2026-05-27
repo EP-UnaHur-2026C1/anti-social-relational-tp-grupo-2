@@ -13,5 +13,4 @@ const postTagSchema = Joi.object({
   tagId: Joi.number().integer().positive().required(),
 });
 
-
 module.exports = { postSchema, postUpdateSchema, postTagSchema };
