@@ -34,7 +34,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     config: DataTypes.INTEGER,
-    commentedAt: DataTypes.DATE,
+    commentedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
