@@ -1,7 +1,7 @@
 const { Router } = require("express");
-const postController = require("../controllers/postController");
+const postController = require("../controllers/post.controllers");
 const validateSchema = require("../middlewares/validateSchema");
-const { postSchema, postUpdateSchema } = require("../schemas/postSchema");
+const { postSchema, postUpdateSchema, postTagSchema } = require("../schemas/postSchema");
 const { postImageSchema } = require("../schemas/postImageSchema");
 const { idParamSchema, postImageParamSchema, postTagParamSchema } = require("../schemas/paramsSchema");
 const router = Router();
@@ -17,7 +17,7 @@ router.post("/:id/images", validateSchema(idParamSchema, "params"), validateSche
 router.delete("/:id/images/:imageId", validateSchema(postImageParamSchema, "params"), postController.removeImage);
 
 // Tags
-router.post("/:id/tags", validateSchema(idParamSchema, "params"), postController.addTag);
+router.post("/:id/tags", validateSchema(idParamSchema, "params"), validateSchema(postTagSchema), postController.addTag);
 router.delete("/:id/tags/:tagId", validateSchema(postTagParamSchema, "params"), postController.removeTag);
 
 module.exports = router;

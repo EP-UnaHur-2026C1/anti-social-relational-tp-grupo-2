@@ -9,4 +9,9 @@ const postUpdateSchema = Joi.object({
   description: Joi.string().min(1),
 }).min(1);
 
-module.exports = { postSchema, postUpdateSchema };
+const postTagSchema = Joi.object({
+  tagId: Joi.number().integer().positive().required(),
+});
+
+
+module.exports = { postSchema, postUpdateSchema, postTagSchema };

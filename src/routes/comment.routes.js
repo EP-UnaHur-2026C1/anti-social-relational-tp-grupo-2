@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const commentController = require("../controllers/commentController");
+const commentController = require("../controllers/comment.controllers");
 const validateSchema = require("../middlewares/validateSchema");
 const { commentSchema, commentUpdateSchema } = require("../schemas/commentSchema");
 const { idParamSchema } = require("../schemas/paramsSchema");

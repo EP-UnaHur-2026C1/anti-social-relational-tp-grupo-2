@@ -30,7 +30,7 @@ const getById = async (req, res) => {
         { association: "tags" },
         {
           association: "comments",
-          where: { createdAt: { [Op.gte]: dateLimit } },
+          where: { commentedAt: { [Op.gte]: dateLimit } },
           required: false,
           include: [{ association: "author", attributes: ["id", "nickname"] }],
         },
