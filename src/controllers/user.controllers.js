@@ -1,6 +1,6 @@
 const {User} = require('../../models')
 
-const obtenerUsuarios = async(req, res) => {
+const getAll = async(req, res) => {
   try {
     const usuarios = await User.findAll({
       attributes: ["nickname", "email"]
@@ -13,12 +13,12 @@ const obtenerUsuarios = async(req, res) => {
   }
 }
 
-const obtenerUsuario = async(req, res) => {
+const getById = async(req, res) => {
   const usuario = req.usuario;
   res.status(200).json(usuario);
 }
 
-const crearUsuario = async (req, res) => {
+const create = async (req, res) => {
   try {
     const {nickname, email, password} = req.body;
     const usuario = await User.create({
@@ -36,7 +36,7 @@ const crearUsuario = async (req, res) => {
   }
 }
 
-const actualizarUsuario = async(req, res) => {
+const update = async(req, res) => {
   try {
     const {id} = req.params; 
     const {nickname, email, password} = req.body;
@@ -54,7 +54,7 @@ const actualizarUsuario = async(req, res) => {
   }
 }
 
-const eliminarUsuario = async(req, res) => {
+const remove = async(req, res) => {
   try {
     const {id} = req.params; 
     const usuario = req.usuario;
@@ -70,9 +70,9 @@ const eliminarUsuario = async(req, res) => {
 }
 
 module.exports = {
-  crearUsuario,
-  obtenerUsuario,
-  obtenerUsuarios,
-  actualizarUsuario,
-  eliminarUsuario
+  create,
+  getById,
+  getAll,
+  update,
+  remove
 }
