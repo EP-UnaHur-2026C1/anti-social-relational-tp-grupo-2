@@ -65,10 +65,13 @@ const update = async (req, res) => {
   }
 };
 
+// Eliminar un post y los comentarios que se hayan hecho en él.
+
 const remove = async (req, res) => {
   try {
     const post = await Post.findByPk(req.params.id);
     if (!post) return res.status(404).json({ error: "Post not found" });
+    await Comment.destroy({ where: { postId: post.id } });
     await post.destroy();
     res.status(204).send();
   } catch (error) {

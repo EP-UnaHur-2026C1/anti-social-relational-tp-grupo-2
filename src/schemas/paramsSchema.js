@@ -16,4 +16,9 @@ const postTagParamSchema = Joi.object({
   tagId: Joi.number().integer().positive().required(),
 });
 
-module.exports = { idParamSchema, postImageParamSchema, postTagParamSchema };
+const userFollowParamSchema = Joi.object({
+  id: Joi.number().integer().positive().required(),
+  followedId: Joi.number().integer().positive().required(),
+});
+
+module.exports = { idParamSchema, postImageParamSchema, postTagParamSchema, userFollowParamSchema };
