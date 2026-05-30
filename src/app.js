@@ -15,6 +15,7 @@ const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
 
 app.use(express.json());
+app.use('/assets', express.static('assets'));
 app.use('/posts', postRoutes);
 app.use('/comments', commentRoutes);
 app.use('/tags', tagRoutes);
