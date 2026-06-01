@@ -78,6 +78,81 @@ paths:
         '200':
           description: Usuario eliminado con éxito
 
+  # USERS - FOLLOWERS
+  /users/{id}/followers:
+    get:
+      tags: [Users]
+      summary: Obtener los seguidores de un usuario
+      description: Devuelve la lista de usuarios que siguen al usuario indicado por ID.
+      parameters:
+        - $ref: '#/components/parameters/pathId'
+      responses:
+        '200':
+          description: Lista de seguidores obtenida con exito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserPublic'
+        '404':
+          description: Usuario no encontrado
+
+  /users/{id}/following:
+    get:
+      tags: [Users]
+      summary: Obtener los usuarios seguidos por un usuario
+      description: Devuelve la lista de usuarios a los que sigue el usuario indicado por ID.
+      parameters:
+        - $ref: '#/components/parameters/pathId'
+      responses:
+        '200':
+          description: Lista de usuarios seguidos obtenida con exito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserPublic'
+        '404':
+          description: Usuario no encontrado
+
+  /users/{id}/following/{followedId}:
+    post:
+      tags: [Users]
+      summary: Seguir a un usuario
+      description: Crea una relacion donde el usuario indicado por id comienza a seguir al usuario indicado por followedId.
+      parameters:
+        - $ref: '#/components/parameters/pathId'
+        - $ref: '#/components/parameters/pathFollowedId'
+      responses:
+        '201':
+          description: Relacion de seguimiento creada con exito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FollowRelation'
+        '400':
+          description: Error de validacion o intento de seguirse a si mismo
+        '404':
+          description: Usuario seguidor o usuario seguido no encontrado
+        '409':
+          description: La relacion de seguimiento ya existe
+    delete:
+      tags: [Users]
+      summary: Dejar de seguir a un usuario
+      description: Elimina la relacion donde el usuario indicado por id sigue al usuario indicado por followedId.
+      parameters:
+        - $ref: '#/components/parameters/pathId'
+        - $ref: '#/components/parameters/pathFollowedId'
+      responses:
+        '204':
+          description: Relacion de seguimiento eliminada con exito
+        '400':
+          description: Error de validacion
+        '404':
+          description: Relacion de seguimiento no encontrada
+
   # POSTS
   /posts:
     get:
@@ -337,6 +412,14 @@ components:
       schema:
         type: integer
         minimum: 1
+    pathFollowedId:
+      name: followedId
+      in: path
+      required: true
+      description: ID del usuario que va a ser seguido o dejado de seguir
+      schema:
+        type: integer
+        minimum: 1
 
   schemas:
     User:
@@ -361,6 +444,41 @@ components:
         email:
           type: string
           format: email
+
+    UserPublic:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+        nickname:
+          type: string
+          example: maria_gomez
+        name:
+          type: string
+          example: Maria Gomez
+        email:
+          type: string
+          format: email
+          example: maria.gomez@email.com
+
+    FollowRelation:
+      type: object
+      properties:
+        followerId:
+          type: integer
+          example: 1
+          description: ID del usuario que sigue
+        followedId:
+          type: integer
+          example: 2
+          description: ID del usuario seguido
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
 
     UserUpdate:
       type: object
