@@ -4,6 +4,7 @@ const validateSchema = require("../middlewares/validateSchema");
 const { postSchema, postUpdateSchema, postTagSchema } = require("../schemas/postSchema");
 const { postImageSchema } = require("../schemas/postImageSchema");
 const { idParamSchema, postImageParamSchema, postTagParamSchema } = require("../schemas/paramsSchema");
+const upload = require("../middlewares/upload");
 const router = Router();
 
 router.get("/", postController.getAll);
@@ -13,7 +14,7 @@ router.put("/:id", validateSchema(idParamSchema, "params"), validateSchema(postU
 router.delete("/:id", validateSchema(idParamSchema, "params"), postController.remove);
 
 // Imágenes
-router.post("/:id/images", validateSchema(idParamSchema, "params"), validateSchema(postImageSchema), postController.addImage);
+router.post("/:id/images", validateSchema(idParamSchema, "params"), upload.single("image"), postController.addImage);
 router.delete("/:id/images/:imageId", validateSchema(postImageParamSchema, "params"), postController.removeImage);
 
 // Tags

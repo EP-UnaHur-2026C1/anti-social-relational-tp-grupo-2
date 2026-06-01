@@ -84,7 +84,14 @@ const addImage = async (req, res) => {
   try {
     const post = await Post.findByPk(req.params.id);
     if (!post) return res.status(404).json({ error: "Post not found" });
-    const image = await PostImage.create({ url: req.body.url, postId: post.id });
+    
+    if (!req.file) {
+      return res.status(400).json({ error: "No image file provided" });
+    }
+
+    const localUrl = `/assets/${req.file.filename}`;
+
+    const image = await PostImage.create({ url: localUrl, postId: post.id });
     res.status(201).json(image);
   } catch (error) {
     res.status(500).json({ error: error.message });

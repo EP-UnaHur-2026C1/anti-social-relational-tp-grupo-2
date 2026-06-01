@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const db = require('../models');
@@ -14,6 +15,7 @@ const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
 
 app.use(express.json());
+app.use('/assets', express.static('assets'));
 app.use('/posts', postRoutes);
 app.use('/comments', commentRoutes);
 app.use('/tags', tagRoutes);
